@@ -63,7 +63,7 @@ public class ClientClass extends JFrame {
         try {
             // Look up the server using RMI
             server = (ServerInterface) Naming.lookup("//localhost/TicTacToe");
-            playerSign = server.registerPlayer(new ClientCallbackInterface());
+            playerSign = server.registerPlayer(new ClientCallback());
             System.out.println("Client registered with sign \""+playerSign+"\" and ID="+ID);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,8 +97,8 @@ public class ClientClass extends JFrame {
         }
     }
 
-    private class ClientCallbackInterface extends UnicastRemoteObject implements ClientInterface {
-        public ClientCallbackInterface() throws RemoteException {
+    private class ClientCallback extends UnicastRemoteObject implements ClientInterface {
+        public ClientCallback() throws RemoteException {
             super();
         }
 
