@@ -1,7 +1,7 @@
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface TicTacToeInterfClient extends Remote {
+public interface ClientInterface extends Remote {
 
     // Force client to be informed about new state of board
     void updateBoard(char[][] board) throws RemoteException;

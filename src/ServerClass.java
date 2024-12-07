@@ -3,13 +3,13 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicTacToeServer extends UnicastRemoteObject implements TicTacToeInterfServer {
+public class ServerClass extends UnicastRemoteObject implements ServerInterface {
     private int howManyPlayersJoined;
-    private List<TicTacToeInterfClient> players;
+    private List<ClientInterface> players;
     private List<GameSession> gameSessions;
 
     // Constructor
-    public TicTacToeServer() throws RemoteException {
+    public ServerClass() throws RemoteException {
         super();
         howManyPlayersJoined = 0;
         players = new ArrayList<>();
@@ -31,7 +31,7 @@ public class TicTacToeServer extends UnicastRemoteObject implements TicTacToeInt
     }
 
     @Override
-    public char registerPlayer(TicTacToeInterfClient player) throws RemoteException {
+    public char registerPlayer(ClientInterface player) throws RemoteException {
         System.out.println("Server tries to register a new player");
         char assignedSign = '-';
         howManyPlayersJoined += 1;

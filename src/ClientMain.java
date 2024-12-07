@@ -1,7 +1,7 @@
 public class ClientMain {
     //in Client its contents were enclosed in "SwingUtilities.invokeLater(() -> {})"
     public static void main(String[] args) {
-        TicTacToeClient client = new TicTacToeClient();
+        ClientClass client = new ClientClass();
         client.setVisible(true);
         System.out.print("Client is created");
         client.registerYourself();

@@ -1,8 +1,8 @@
 import java.rmi.RemoteException;
 
 public class GameSession {
-    private TicTacToeInterfClient player1;
-    private TicTacToeInterfClient player2;
+    private ClientInterface player1;
+    private ClientInterface player2;
     private char[][] board;
     private char currentPlayerSign;
     private boolean gameStarted;
@@ -15,7 +15,7 @@ public class GameSession {
         gameStarted = false;
     }
 
-    public GameSession(TicTacToeInterfClient player1, TicTacToeInterfClient player2) {
+    public GameSession(ClientInterface player1, ClientInterface player2) {
         this.player1 = player1;
         this.player2 = player2;
         this.board = new char[3][3];
@@ -33,7 +33,7 @@ public class GameSession {
         }
     }
 
-    public char addPlayer(TicTacToeInterfClient player) {
+    public char addPlayer(ClientInterface player) {
         if (player1 == null) {
             player1 = player;
             return 'X';

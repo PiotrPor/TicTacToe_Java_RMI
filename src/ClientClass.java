@@ -5,9 +5,9 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class TicTacToeClient extends JFrame {
+public class ClientClass extends JFrame {
     private int ID; //TODO: can be private as well?
-    private TicTacToeInterfServer server;
+    private ServerInterface server;
     private JButton[][] buttons;
     private JLabel labelForPlayer;
     private char playerSign;
@@ -15,7 +15,7 @@ public class TicTacToeClient extends JFrame {
     private boolean gameStarted;
     private boolean isMyTurn;
 
-    public TicTacToeClient() {
+    public ClientClass() {
         int buttonSize = 80;
         int marginSize = 20;
         int heightOfLabel = 30;
@@ -62,8 +62,8 @@ public class TicTacToeClient extends JFrame {
         System.out.println("Client will try to register on the server.");
         try {
             // Look up the server using RMI
-            server = (TicTacToeInterfServer) Naming.lookup("//localhost/TicTacToe");
-            playerSign = server.registerPlayer(new ClientCallback());
+            server = (ServerInterface) Naming.lookup("//localhost/TicTacToe");
+            playerSign = server.registerPlayer(new ClientCallbackInterface());
             System.out.println("Client registered with sign \""+playerSign+"\" and ID="+ID);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,8 +97,8 @@ public class TicTacToeClient extends JFrame {
         }
     }
 
-    private class ClientCallback extends UnicastRemoteObject implements TicTacToeInterfClient {
-        public ClientCallback() throws RemoteException {
+    private class ClientCallbackInterface extends UnicastRemoteObject implements ClientInterface {
+        public ClientCallbackInterface() throws RemoteException {
             super();
         }
 
@@ -107,7 +107,7 @@ public class TicTacToeClient extends JFrame {
             System.out.println("Client updateStatus() \""+message+"\". isMyTurn: "+isMyTurn);
             SwingUtilities.invokeLater(() -> {
                 //TODO: later use "JOptionPane.showMessageDialog(this, message)" ??
-                TicTacToeClient.this.labelForPlayer.setText(message);
+                ClientClass.this.labelForPlayer.setText(message);
             });
         }
 
@@ -115,11 +115,11 @@ public class TicTacToeClient extends JFrame {
         public void updateBoard(char[][] updatedBoard) throws RemoteException {
             SwingUtilities.invokeLater(() -> {
                 // Update the client's board with the new state from the server
-                TicTacToeClient.this.board = updatedBoard;
+                ClientClass.this.board = updatedBoard;
                 // Update the visual buttons to reflect the new board state
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
-                        TicTacToeClient.this.buttons[i][j].setText(String.valueOf(updatedBoard[i][j]));
+                        ClientClass.this.buttons[i][j].setText(String.valueOf(updatedBoard[i][j]));
                     }
                 }
             });
