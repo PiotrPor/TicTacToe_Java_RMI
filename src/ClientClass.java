@@ -41,20 +41,21 @@ public class ClientClass extends JFrame {
         labelForPlayer.setVisible(true);
         add(labelForPlayer);
         // Initialize buttons for the Tic-Tac-Toe grid
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                buttons[i][j] = new JButton("-");
-                buttons[i][j].setFont(new Font("Arial", Font.PLAIN, 40));
-                buttons[i][j].setFocusPainted(false);
-                buttons[i][j].setEnabled(true); //TODO: maybe wait until there are 2 players?
-                buttons[i][j].setBounds(
-                        j*gameButtonSize+marginSize,
-                        i*gameButtonSize+2*marginSize+heightOfLabel,
+        int a,b;
+        for (a = 0; a < 3; a++) {
+            for (b = 0; b < 3; b++) {
+                buttons[a][b] = new JButton("-");
+                buttons[a][b].setFont(new Font("Arial", Font.PLAIN, 40));
+                buttons[a][b].setFocusPainted(false);
+                buttons[a][b].setEnabled(false); //TODO: maybe wait until there are 2 players?
+                buttons[a][b].setBounds(
+                        b*gameButtonSize+marginSize,
+                        a*gameButtonSize+2*marginSize+heightOfLabel,
                         gameButtonSize,
                         gameButtonSize
                         ); //x y width height
-                buttons[i][j].addActionListener(new ButtonClickListener(i, j));
-                add(buttons[i][j]);
+                buttons[a][b].addActionListener(new ButtonClickListener(a, b));
+                add(buttons[a][b]);
             }
         }
         // add JButton for leavin the game
@@ -147,9 +148,10 @@ public class ClientClass extends JFrame {
             // Update the client's board with the new state from the server
             ClientClass.this.board = updatedBoard;
             // Update the visual buttons to reflect the new board state
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    ClientClass.this.buttons[i][j].setText(String.valueOf(updatedBoard[i][j]));
+            int a,b;
+            for (a = 0; a < 3; a++) {
+                for (b = 0; b < 3; b++) {
+                    ClientClass.this.buttons[a][b].setText(String.valueOf(updatedBoard[a][b]));
                 }
             }
         }
@@ -160,6 +162,12 @@ public class ClientClass extends JFrame {
             isMyTurn = doesHeBegin;
             buttonToExit.setVisible(true);
             buttonToExit.setEnabled(true);
+            int a,b;
+            for (a = 0; a < 3; a++) {
+                for (b = 0; b < 3; b++) {
+                    buttons[a][b].setEnabled(true);
+                }
+            }
             System.out.println("Server makes you start playing. isMyTurn: "+isMyTurn);
         }
 
