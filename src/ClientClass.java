@@ -20,8 +20,8 @@ public class ClientClass extends JFrame {
         int gameButtonSize = 80;
         int marginSize = 20;
         int heightOfLabel = 30;
-        int exitButtonWidth = 120;
-        int exitButtonHeight = 60;
+        int exitButtonWidth = (int)(2*gameButtonSize); //120? 160?
+        int exitButtonHeight = 50;
         int totalWindowWidth = 3*gameButtonSize+3*marginSize;
         int totalWindowHeight = 4*gameButtonSize+4*marginSize+heightOfLabel;
         setTitle("Tic-Tac-Toe Game");
@@ -59,11 +59,11 @@ public class ClientClass extends JFrame {
         }
         // add JButton for leavin the game
         buttonToExit = new JButton("Exit");
-        buttonToExit.setFont(new Font("Arial", Font.PLAIN, 40));
+        buttonToExit.setFont(new Font("Arial", Font.PLAIN, 30));
         buttonToExit.setVisible(false); //for now
         buttonToExit.setEnabled(false); //for now
         buttonToExit.setBounds(
-                2*marginSize,
+                marginSize+gameButtonSize/2,
                 3*gameButtonSize+3*marginSize+heightOfLabel,
                 exitButtonWidth,
                 exitButtonHeight
