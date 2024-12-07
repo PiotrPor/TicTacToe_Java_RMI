@@ -5,14 +5,12 @@ import java.util.List;
 
 public class ServerClass extends UnicastRemoteObject implements ServerInterface {
     private int howManyPlayersJoined;
-    private List<ClientInterface> players;
     private List<GameSession> gameSessions;
 
     // Constructor
     public ServerClass() throws RemoteException {
         super();
         howManyPlayersJoined = 0;
-        players = new ArrayList<>();
         gameSessions = new ArrayList<>();
     }
 
@@ -36,7 +34,6 @@ public class ServerClass extends UnicastRemoteObject implements ServerInterface 
         char assignedSign = '-';
         howManyPlayersJoined += 1;
         player.setID(howManyPlayersJoined);
-        players.add(player);
         if (gameSessions.isEmpty() || areAllSessionsFull()) {
             System.out.println("  Creating a new game session");
             GameSession newGame = new GameSession();
