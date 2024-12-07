@@ -19,7 +19,7 @@ public class ClientClass extends JFrame {
         int buttonSize = 80;
         int marginSize = 20;
         int heightOfLabel = 30;
-        int totalWindowWidth = 3*buttonSize+2*marginSize;
+        int totalWindowWidth = 3*buttonSize+3*marginSize;
         int totalWindowHeight = 4*buttonSize+4*marginSize+heightOfLabel;
         setTitle("Tic-Tac-Toe Game");
         setSize(totalWindowWidth, totalWindowHeight);
