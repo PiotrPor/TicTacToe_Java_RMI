@@ -147,10 +147,5 @@ public class ClientClass extends JFrame {
         public int getID() throws RemoteException {
             return ID;
         }
-
-        @Override
-        public void proveRemoteInvocation() throws RemoteException {
-            System.out.println("Method in ClientCallback has been remotely invoked by RMI.");
-        }
     }
 }

@@ -18,7 +18,4 @@ public interface ClientInterface extends Remote {
     void setID(int newValue) throws RemoteException;
 
     int getID() throws RemoteException;
-
-    // for debugging - is a proof of being run (will be invoked by RMI)
-    void proveRemoteInvocation() throws RemoteException;
 }

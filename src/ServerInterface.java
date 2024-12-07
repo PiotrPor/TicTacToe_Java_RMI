@@ -13,7 +13,4 @@ public interface ServerInterface extends Remote {
 
     // (Try to) add player to the game
     char registerPlayer(ClientInterface player) throws RemoteException;
-
-    // for debugging - is a proof of being run (will be invoked by RMI)
-    void proveRemoteInvocation() throws RemoteException;
 }

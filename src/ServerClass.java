@@ -75,9 +75,4 @@ public class ServerClass extends UnicastRemoteObject implements ServerInterface 
         }
         return true;
     }
-
-    @Override
-    public void proveRemoteInvocation() throws RemoteException {
-        System.out.println("Method on the server has been remotely invoked by RMI.");
-    }
 }
