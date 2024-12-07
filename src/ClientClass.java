@@ -6,8 +6,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class ClientClass extends JFrame {
-    private int ID; //TODO: can be private as well?
-    private ServerInterface server;
+    private int ID;
+    private ServerInterface serverForMe;
     private JButton[][] buttons;
     private JLabel labelForPlayer;
     private char playerSign;
@@ -62,8 +62,8 @@ public class ClientClass extends JFrame {
         System.out.println("Client will try to register on the server.");
         try {
             // Look up the server using RMI
-            server = (ServerInterface) Naming.lookup("//localhost/TicTacToe");
-            playerSign = server.registerPlayer(new ClientCallback());
+            serverForMe = (ServerInterface) Naming.lookup("//localhost/TicTacToe");
+            playerSign = serverForMe.registerPlayer(new ClientCallback());
             System.out.println("Client registered with sign \""+playerSign+"\" and ID="+ID);
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +85,7 @@ public class ClientClass extends JFrame {
             if (gameStarted && isMyTurn) {
                 try {
                     System.out.println("  Will invoke makeMove() method on the server");
-                    if (server.makeMove(row, col, ID)) {
+                    if (serverForMe.makeMove(row, col, ID)) {
                         System.out.println("  Server added the new sign onto the board");
                         buttons[row][col].setEnabled(false);
                         isMyTurn = false;
