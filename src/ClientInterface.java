@@ -15,6 +15,8 @@ public interface ClientInterface extends Remote {
     // inform the player whether it's their turn
     void tellItsTheirTurn(Boolean isItTheirTurn) throws RemoteException;
 
+    void yourOpponentLeft() throws RemoteException;
+
     void setID(int newValue) throws RemoteException;
 
     int getID() throws RemoteException;

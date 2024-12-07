@@ -91,6 +91,25 @@ public class GameSession {
         }
     }
 
+    public void letPlayerLeave(int whichOne) throws RemoteException {
+        if(whichOne == 1) {
+            player1 = null;
+            if(player2 != null) {
+                player2.yourOpponentLeft();
+                //player2.updateStatus("Your opponent has left the game");
+                //player2.makeThemStartPlaying(false);
+            }
+        } else if(whichOne == 2) {
+            player2 = null;
+            if(player1 != null) {
+                player1.yourOpponentLeft();
+                //player1.updateStatus("Your opponent has left the game");
+                //player1.makeThemStartPlaying(false);
+            }
+        }
+        gameStarted = false; //TODO: needed?
+    }
+
     public boolean performMove(int row, int col, int moverID) throws RemoteException {
         char playerSign = '-';
         if(isThisPlayerHere(moverID) == 1) { playerSign  = 'X'; }

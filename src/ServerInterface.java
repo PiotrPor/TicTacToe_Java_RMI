@@ -8,4 +8,7 @@ public interface ServerInterface extends Remote {
 
     // (Try to) add player to the game
     char registerPlayer(ClientInterface player) throws RemoteException;
+
+    // removes this player from game (and more)
+    void removeMe(int myID) throws RemoteException;;
 }

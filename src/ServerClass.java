@@ -64,6 +64,21 @@ public class ServerClass extends UnicastRemoteObject implements ServerInterface 
         return assignedSign;
     }
 
+    @Override
+    public void removeMe(int myID) throws RemoteException {
+        int a;
+        for(GameSession gra : gameSessions) {
+            a = gra.isThisPlayerHere(myID);
+            if(a > 0) {
+                gra.letPlayerLeave(a);
+                if(gra.tellHowManyPlayers() == 0) {
+                    gameSessions.remove(gra);
+                }
+                break;
+            }
+        }
+    }
+
     private boolean areAllSessionsFull() {
         for(GameSession gra : gameSessions) {
             if (gra.tellHowManyPlayers() < 2) {

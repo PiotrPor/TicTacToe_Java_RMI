@@ -10,17 +10,20 @@ public class ClientClass extends JFrame {
     private ServerInterface serverForMe;
     private JButton[][] buttons;
     private JLabel labelForPlayer;
+    private JButton buttonToExit;
     private char playerSign;
     private char[][] board;
     private boolean gameStarted;
     private boolean isMyTurn;
 
     public ClientClass() {
-        int buttonSize = 80;
+        int gameButtonSize = 80;
         int marginSize = 20;
         int heightOfLabel = 30;
-        int totalWindowWidth = 3*buttonSize+3*marginSize;
-        int totalWindowHeight = 4*buttonSize+4*marginSize+heightOfLabel;
+        int exitButtonWidth = 120;
+        int exitButtonHeight = 60;
+        int totalWindowWidth = 3*gameButtonSize+3*marginSize;
+        int totalWindowHeight = 4*gameButtonSize+4*marginSize+heightOfLabel;
         setTitle("Tic-Tac-Toe Game");
         setSize(totalWindowWidth, totalWindowHeight);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -45,16 +48,29 @@ public class ClientClass extends JFrame {
                 buttons[i][j].setFocusPainted(false);
                 buttons[i][j].setEnabled(true); //TODO: maybe wait until there are 2 players?
                 buttons[i][j].setBounds(
-                        j*buttonSize+marginSize,
-                        i*buttonSize+2*marginSize+heightOfLabel,
-                        buttonSize,
-                        buttonSize
+                        j*gameButtonSize+marginSize,
+                        i*gameButtonSize+2*marginSize+heightOfLabel,
+                        gameButtonSize,
+                        gameButtonSize
                         ); //x y width height
                 buttons[i][j].addActionListener(new ButtonClickListener(i, j));
                 add(buttons[i][j]);
             }
         }
-        // Register the client on the server
+        // add JButton for leavin the game
+        buttonToExit = new JButton("Exit");
+        buttonToExit.setFont(new Font("Arial", Font.PLAIN, 40));
+        buttonToExit.setVisible(false); //for now
+        buttonToExit.setEnabled(false); //for now
+        buttonToExit.setBounds(
+                2*marginSize,
+                3*gameButtonSize+3*marginSize+heightOfLabel,
+                exitButtonWidth,
+                exitButtonHeight
+                );
+        buttonToExit.addActionListener(new ExitClickListener());
+        add(buttonToExit);
+        // tell them the client object is ready
         labelForPlayer.setText("Created");
         System.out.println("Client's constructor finished.");
     }
@@ -98,6 +114,22 @@ public class ClientClass extends JFrame {
         }
     }
 
+    private class ExitClickListener implements ActionListener {
+        public ExitClickListener(){
+            //empty
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                serverForMe.removeMe(ID);
+                ClientClass.this.dispose();  //System.exit(0);
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     private class ClientCallback extends UnicastRemoteObject implements ClientInterface {
         public ClientCallback() throws RemoteException {
             super();
@@ -106,30 +138,28 @@ public class ClientClass extends JFrame {
         @Override
         public void updateStatus(String message) throws RemoteException {
             System.out.println("Client updateStatus() \""+message+"\". isMyTurn: "+isMyTurn);
-            SwingUtilities.invokeLater(() -> {
-                //TODO: later use "JOptionPane.showMessageDialog(this, message)" ??
-                ClientClass.this.labelForPlayer.setText(message);
-            });
+            //TODO: later use "JOptionPane.showMessageDialog(this, message)" ??
+            ClientClass.this.labelForPlayer.setText(message);
         }
 
         @Override
         public void updateBoard(char[][] updatedBoard) throws RemoteException {
-            SwingUtilities.invokeLater(() -> {
-                // Update the client's board with the new state from the server
-                ClientClass.this.board = updatedBoard;
-                // Update the visual buttons to reflect the new board state
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        ClientClass.this.buttons[i][j].setText(String.valueOf(updatedBoard[i][j]));
-                    }
+            // Update the client's board with the new state from the server
+            ClientClass.this.board = updatedBoard;
+            // Update the visual buttons to reflect the new board state
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    ClientClass.this.buttons[i][j].setText(String.valueOf(updatedBoard[i][j]));
                 }
-            });
+            }
         }
 
         @Override
         public void makeThemStartPlaying(Boolean doesHeBegin) throws RemoteException {
             gameStarted = true;
             isMyTurn = doesHeBegin;
+            buttonToExit.setVisible(true);
+            buttonToExit.setEnabled(true);
             System.out.println("Server makes you start playing. isMyTurn: "+isMyTurn);
         }
 
@@ -137,6 +167,13 @@ public class ClientClass extends JFrame {
         public void tellItsTheirTurn(Boolean isItTheirTurn) throws RemoteException {
             isMyTurn = isItTheirTurn;
             System.out.println("Server tells you about your turn. isMyTurn: "+isMyTurn);
+        }
+
+        @Override
+        public void yourOpponentLeft() throws RemoteException {
+            gameStarted = false;
+            isMyTurn = false;
+            ClientClass.this.labelForPlayer.setText("Your opponent has left the game");
         }
 
         @Override
