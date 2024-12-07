@@ -23,7 +23,7 @@ public class ClientClass extends JFrame {
         int totalWindowHeight = 4*buttonSize+4*marginSize+heightOfLabel;
         setTitle("Tic-Tac-Toe Game");
         setSize(totalWindowWidth, totalWindowHeight);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(null);
         buttons = new JButton[3][3];
         playerSign = '-';
@@ -34,6 +34,7 @@ public class ClientClass extends JFrame {
         labelForPlayer = new JLabel("Creating...");
         labelForPlayer.setEnabled(true);
         labelForPlayer.setBounds(0,marginSize,totalWindowWidth,heightOfLabel);
+        labelForPlayer.setHorizontalAlignment(SwingConstants.CENTER);
         labelForPlayer.setVisible(true);
         add(labelForPlayer);
         // Initialize buttons for the Tic-Tac-Toe grid
