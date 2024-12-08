@@ -10,7 +10,7 @@ public interface ClientInterface extends Remote {
     void updateStatus(String message) throws RemoteException;
 
     // inform client that the game has started
-    void makeThemStartPlaying(Boolean doesHeBegin) throws RemoteException;
+    void makeThemStartPlaying(Boolean doesHeBegin, int enemyID) throws RemoteException;
 
     // inform the player whether it's their turn
     void tellItsTheirTurn(Boolean isItTheirTurn) throws RemoteException;

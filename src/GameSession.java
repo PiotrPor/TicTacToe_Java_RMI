@@ -69,8 +69,8 @@ public class GameSession {
     public void startGame() throws RemoteException {
         gameStarted = true;
         currentPlayerSign = 'X';
-        player1.makeThemStartPlaying(true);
-        player2.makeThemStartPlaying(false);
+        player1.makeThemStartPlaying(true, player2.getID());
+        player2.makeThemStartPlaying(false, player1.getID());
         initializeBoard();
         updateClients();
     }

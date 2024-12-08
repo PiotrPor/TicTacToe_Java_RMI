@@ -10,6 +10,7 @@ public class ClientClass extends JFrame {
     private ServerInterface serverForMe;
     private JButton[][] buttons;
     private JLabel labelForPlayer;
+    private JLabel labelAboutOpponent;
     private JButton buttonToExit;
     private char playerSign;
     private char[][] board;
@@ -23,8 +24,8 @@ public class ClientClass extends JFrame {
         int exitButtonWidth = (int)(2*gameButtonSize); //120? 160?
         int exitButtonHeight = 50;
         int totalWindowWidth = 3*gameButtonSize+3*marginSize;
-        int totalWindowHeight = 4*gameButtonSize+4*marginSize+heightOfLabel;
-        setTitle("Tic-Tac-Toe Game");
+        int totalWindowHeight = 4*gameButtonSize+4*marginSize+2*heightOfLabel;
+        setTitle("Tic-Tac-Toe Java RMI Client");
         setSize(totalWindowWidth, totalWindowHeight);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(null);
@@ -40,6 +41,13 @@ public class ClientClass extends JFrame {
         labelForPlayer.setHorizontalAlignment(SwingConstants.CENTER);
         labelForPlayer.setVisible(true);
         add(labelForPlayer);
+        //second JLabel
+        labelAboutOpponent = new JLabel(" ");
+        labelAboutOpponent.setEnabled(true);
+        labelAboutOpponent.setBounds(0,2*marginSize,totalWindowWidth,heightOfLabel);
+        labelAboutOpponent.setHorizontalAlignment(SwingConstants.CENTER);
+        labelAboutOpponent.setVisible(true);
+        add(labelAboutOpponent);
         // Initialize buttons for the Tic-Tac-Toe grid
         int a,b;
         for (a = 0; a < 3; a++) {
@@ -50,7 +58,7 @@ public class ClientClass extends JFrame {
                 buttons[a][b].setEnabled(false); //TODO: maybe wait until there are 2 players?
                 buttons[a][b].setBounds(
                         b*gameButtonSize+marginSize,
-                        a*gameButtonSize+2*marginSize+heightOfLabel,
+                        a*gameButtonSize+2*marginSize+2*heightOfLabel,
                         gameButtonSize,
                         gameButtonSize
                         ); //x y width height
@@ -65,7 +73,7 @@ public class ClientClass extends JFrame {
         buttonToExit.setEnabled(false); //for now
         buttonToExit.setBounds(
                 marginSize+gameButtonSize/2,
-                3*gameButtonSize+3*marginSize+heightOfLabel,
+                3*gameButtonSize+3*marginSize+2*heightOfLabel,
                 exitButtonWidth,
                 exitButtonHeight
                 );
@@ -83,6 +91,7 @@ public class ClientClass extends JFrame {
             serverForMe = (ServerInterface) Naming.lookup("//localhost/TicTacToe");
             playerSign = serverForMe.registerPlayer(new ClientCallback());
             System.out.println("Client registered with sign \""+playerSign+"\" and ID="+ID);
+            setTitle("Tic-Tac-Toe Player "+ID);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -157,7 +166,7 @@ public class ClientClass extends JFrame {
         }
 
         @Override
-        public void makeThemStartPlaying(Boolean doesHeBegin) throws RemoteException {
+        public void makeThemStartPlaying(Boolean doesHeBegin, int enemyID) throws RemoteException {
             gameStarted = true;
             isMyTurn = doesHeBegin;
             buttonToExit.setVisible(true);
@@ -168,6 +177,7 @@ public class ClientClass extends JFrame {
                     buttons[a][b].setEnabled(true);
                 }
             }
+            ClientClass.this.labelAboutOpponent.setText("Opponent: player_"+enemyID);
             System.out.println("Server makes you start playing. isMyTurn: "+isMyTurn);
         }
 
@@ -182,6 +192,7 @@ public class ClientClass extends JFrame {
             gameStarted = false;
             isMyTurn = false;
             ClientClass.this.labelForPlayer.setText("Your opponent has left the game");
+            ClientClass.this.labelAboutOpponent.setText(" ");
         }
 
         @Override
