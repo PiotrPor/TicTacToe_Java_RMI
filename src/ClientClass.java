@@ -133,7 +133,7 @@ public class ClientClass extends JFrame {
         public void actionPerformed(ActionEvent e) {
             try {
                 serverForMe.removeMe(ID);
-                ClientClass.this.dispose();  //System.exit(0);
+                System.exit(0);
             } catch (RemoteException ex) {
                 ex.printStackTrace();
             }
