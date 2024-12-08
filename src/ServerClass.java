@@ -40,7 +40,7 @@ public class ServerClass extends UnicastRemoteObject implements ServerInterface 
             newGame.addPlayer(player);
             gameSessions.add(newGame);
             assignedSign = 'X';
-            player.updateStatus("Waiting for the second player to join");
+            player.updateStatus("Waiting for the second player");
         } else {
             System.out.println("  Adding player to the existing game session");
             for(GameSession gra : gameSessions) {
