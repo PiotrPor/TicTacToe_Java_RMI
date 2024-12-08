@@ -52,10 +52,26 @@ public class GameSession {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
         if(a == id) { return 1; }
         else if(b == id) { return 2; }
         else { return 0; }
+    }
+
+    public int getIdOfPlayer(int whichOne) {
+        int theirID = 0;
+        try{
+            if(whichOne == 1 && player1 != null) { theirID = player1.getID(); }
+            if(whichOne == 2 && player2 != null) { theirID = player2.getID(); }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return theirID;
+    }
+
+    public ClientInterface returnWholePlayer(int WhichOne) {
+        if(WhichOne == 1 && player1 != null) { return player1; }
+        else if(WhichOne == 2 && player2 != null) { return player2; }
+        else { return null; }
     }
 
     private void initializeBoard() {

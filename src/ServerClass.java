@@ -67,14 +67,54 @@ public class ServerClass extends UnicastRemoteObject implements ServerInterface 
     @Override
     public void removeMe(int myID) throws RemoteException {
         int a;
+        boolean playerWasLeftAlone = false;
+        boolean someoneIsWaiting = false;
+        int idOfAbandonedPlayer = 0;
+        //int idOfWaitingPlayer = 0;
         for(GameSession gra : gameSessions) {
             a = gra.isThisPlayerHere(myID);
             if(a > 0) {
+                int whichIsWaiting;
+                if(a == 1) { whichIsWaiting = 2; }
+                else { whichIsWaiting = 1; }
                 gra.letPlayerLeave(a);
                 if(gra.tellHowManyPlayers() == 0) {
                     gameSessions.remove(gra);
+                } else {
+                    playerWasLeftAlone = true;
+                    idOfAbandonedPlayer = gra.getIdOfPlayer(whichIsWaiting);
                 }
                 break;
+            }
+        }
+        //if removal has left someone alone and there's another player already waiting
+        //this will pair them up
+        if(playerWasLeftAlone) {
+            ClientInterface attachedPlayer = null;
+            for(GameSession gra : gameSessions) {
+                if(gra.tellHowManyPlayers() == 1 && gra.isThisPlayerHere(idOfAbandonedPlayer) == 0) {
+                    someoneIsWaiting = true;
+                    attachedPlayer = gra.returnWholePlayer(1);
+                    if(attachedPlayer == null) {
+                        attachedPlayer = gra.returnWholePlayer(2);
+                    }
+                    gameSessions.remove(gra);
+                    break;
+                }
+            }
+            if(someoneIsWaiting && attachedPlayer != null) {
+                for(GameSession gra : gameSessions) {
+                    if(gra.isThisPlayerHere(idOfAbandonedPlayer) != 0) {
+                        char assignedSign = gra.addPlayer(attachedPlayer);
+                        //TODO: is it necessary to inform about this?
+                        if(assignedSign == 'X') { System.out.println("  registered as 1st player"); }
+                        else if(assignedSign == 'O') { System.out.println("  registered as 2nd player"); }
+                        //begin game anew
+                        System.out.println("  Because there are 2 players registered it's time to start the game");
+                        gra.startGame();
+                        break;
+                    }
+                }
             }
         }
     }
