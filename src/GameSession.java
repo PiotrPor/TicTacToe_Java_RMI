@@ -48,7 +48,7 @@ public class GameSession {
         int a=0, b=0;
         try {
             if(player1 != null) { a = player1.getID(); }
-            if(player1 != null) { b = player2.getID(); }
+            if(player2 != null) { b = player2.getID(); }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
