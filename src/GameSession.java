@@ -112,15 +112,11 @@ public class GameSession {
             player1 = null;
             if(player2 != null) {
                 player2.yourOpponentLeft();
-                //player2.updateStatus("Your opponent has left the game");
-                //player2.makeThemStartPlaying(false);
             }
         } else if(whichOne == 2) {
             player2 = null;
             if(player1 != null) {
                 player1.yourOpponentLeft();
-                //player1.updateStatus("Your opponent has left the game");
-                //player1.makeThemStartPlaying(false);
             }
         }
         gameStarted = false; //TODO: needed?
